@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GRÄS — Fine Dining Lagos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Inter',sans-serif;
+  background:#0c0c0a;
+  color:#c9b99a;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ===== TOKENS ===== */
+:root{
+  --gold:#c9a96e;
+  --gold-lt:#e2c98a;
+  --cream:#f2ede4;
+  --dark:#0c0c0a;
+  --dark2:#141410;
+  --dark3:#1c1c17;
+  --muted:#7a6e5f;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',sans-serif;
+  --radius:4px;
+  --transition:0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ===== GRAIN OVERLAY ===== */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:.4;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.15;color:var(--cream)}
+a{text-decoration:none;color:inherit}
+
+/* ===== CONTAINER ===== */
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+
+/* ===== SECTION BASE ===== */
+.section{padding:100px 0}
+.section-dark{background:var(--dark2)}
+
+.section-header{text-align:center;margin-bottom:64px}
+.section-tag{
+  display:inline-block;
+  font-size:10px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:14px;
+}
+.section-title{
+  font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);
+  color:var(--cream);font-weight:300;margin-bottom:20px;
+}
+.section-line{
+  width:48px;height:1px;background:var(--gold);
+  margin:0 auto 20px;
+}
+.section-desc{
+  max-width:520px;margin:0 auto;
+  font-size:14px;color:var(--muted);line-height:1.8;
+}
+
+/* ===== REVEAL ANIMATIONS ===== */
+[data-reveal]{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s var(--transition),transform .7s var(--transition);
+}
+[data-reveal="left"]{transform:translateX(-32px)}
+[data-reveal="right"]{transform:translateX(32px)}
+[data-reveal].revealed{opacity:1;transform:none}
+
+/* ===== NAVBAR ===== */
+.gras-nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:20px 0;
+  transition:background .4s,padding .4s,backdrop-filter .4s;
+}
+.gras-nav.nav-scrolled{
+  background:rgba(12,12,10,.92);
+  backdrop-filter:blur(12px);
+  padding:12px 0;
+  border-bottom:1px solid rgba(201,169,110,.12);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1140px;margin:0 auto;padding:0 24px;
+}
+.nav-logo{
+  font-family:var(--serif);font-size:26px;font-weight:700;
+  color:var(--cream);letter-spacing:.08em;
+}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-reserve{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;border:1px solid var(--gold);
+  color:var(--gold);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 22px;border-radius:var(--radius);
+  transition:background .3s,color .3s;font-family:var(--sans);cursor:pointer;
+  font-weight:500;
+}
+.nav-reserve:hover{background:var(--gold);color:var(--dark)}
+.mobile-menu-btn{
+  display:none;background:none;border:none;cursor:pointer;
+  color:var(--cream);padding:4px;
+}
+.mobile-menu-btn svg{width:22px;height:22px}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu{
+  position:fixed;inset:0;z-index:950;
+  background:rgba(12,12,10,.97);backdrop-filter:blur(16px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.mobile-menu.active{opacity:1;pointer-events:all}
+.mobile-menu a{
+  font-family:var(--serif);font-size:2rem;color:var(--cream);
+  letter-spacing:.06em;transition:color .3s;
+}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close-btn{
+  position:absolute;top:24px;right:24px;
+  background:none;border:none;cursor:pointer;color:var(--muted);
+}
+.mobile-close-btn svg{width:24px;height:24px}
+.mob-reserve{
+  display:inline-block;margin-top:8px;
+  border:1px solid var(--gold);color:var(--gold);
+  font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:11px 28px;border-radius:var(--radius);
+}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(12,12,10,.55) 0%,rgba(12,12,10,.3) 40%,rgba(12,12,10,.75) 100%);
+}
+.hero-content{
+  position:relative;text-align:center;padding:0 24px;
+  max-width:780px;
+}
+.hero-eyebrow{
+  display:inline-block;
+  font-size:10px;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:20px;
+}
+.hero-title{
+  font-family:var(--serif);font-size:clamp(4rem,10vw,8rem);
+  color:var(--cream);font-weight:300;line-height:1;
+  letter-spacing:.06em;margin-bottom:10px;
+}
+.hero-subtitle{
+  font-family:var(--serif);font-size:clamp(.95rem,2vw,1.2rem);
+  color:rgba(242,237,228,.65);font-weight:300;font-style:italic;
+  letter-spacing:.04em;margin-bottom:40px;
+}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold);color:var(--dark);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 32px;border-radius:var(--radius);font-weight:600;
+  transition:background .3s,transform .3s;
+}
+.btn-primary:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(242,237,228,.35);color:var(--cream);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 32px;border-radius:var(--radius);font-weight:500;
+  transition:border-color .3s,background .3s;
+}
+.btn-outline:hover{border-color:var(--gold);background:rgba(201,169,110,.08)}
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);
+}
+.scroll-line{
+  width:1px;height:36px;background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ===== ABOUT ===== */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.about-img-wrap{position:relative}
+.about-img-wrap img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.about-img-accent{
+  position:absolute;bottom:-20px;right:-20px;
+  width:140px;height:140px;
+  border:1px solid var(--gold);
+  pointer-events:none;
+}
+.about-tag{
+  font-size:10px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:16px;display:block;
+}
+.about-title{
+  font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);
+  color:var(--cream);font-weight:300;margin-bottom:24px;line-height:1.2;
+}
+.about-text{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:16px}
+.about-stats{display:flex;gap:40px;margin-top:36px;padding-top:36px;border-top:1px solid rgba(201,169,110,.15)}
+.stat-num{
+  font-family:var(--serif);font-size:2.4rem;color:var(--gold);
+  font-weight:300;line-height:1;
+}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:.1em;margin-top:4px}
+
+/* ===== EXPERIENCE / STATS ===== */
+.exp-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+}
+.exp-card{
+  background:var(--dark3);padding:48px 32px;text-align:center;
+  border:1px solid rgba(201,169,110,.08);
+  transition:border-color .3s;
+}
+.exp-card:hover{border-color:rgba(201,169,110,.3)}
+.exp-icon{color:var(--gold);margin-bottom:20px}
+.exp-icon svg{width:36px;height:36px;stroke:var(--gold)}
+.exp-num{
+  font-family:var(--serif);font-size:3rem;color:var(--cream);
+  font-weight:300;line-height:1;margin-bottom:8px;
+}
+.exp-label{font-size:12px;color:var(--muted);letter-spacing:.1em}
+
+/* ===== MENU ===== */
+.menu-tabs{display:flex;gap:0;justify-content:center;margin-bottom:56px;border-bottom:1px solid rgba(201,169,110,.15)}
+.menu-tab{
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);padding:12px 28px;position:relative;font-weight:500;
+  transition:color .3s;
+}
+.menu-tab::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transition:transform .3s;
+}
+.menu-tab.active,
+.menu-tab:hover{color:var(--gold)}
+.menu-tab.active::after{transform:scaleX(1)}
+.menu-panel{display:none}
+.menu-panel.active{display:block}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.menu-item{
+  padding:28px 0;border-bottom:1px solid rgba(201,169,110,.1);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:24px;
+}
+.menu-item:nth-child(odd){padding-right:48px;border-right:1px solid rgba(201,169,110,.1)}
+.menu-item:nth-child(even){padding-left:48px}
+.menu-name{font-family:var(--serif);font-size:1.05rem;color:var(--cream);margin-bottom:4px}
+.menu-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.menu-price{
+  font-family:var(--serif);font-size:1rem;color:var(--gold);
+  white-space:nowrap;font-weight:500;
+}
+
+/* ===== GALLERY ===== */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto;
+  gap:8px;
+}
+.gallery-item{overflow:hidden;position:relative}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .7s var(--transition);
+}
+.gallery-item:hover img{transform:scale(1.05)}
+.gallery-item:first-child{grid-row:1/3;grid-column:1/2}
+.gallery-item:nth-child(2){aspect-ratio:16/10}
+.gallery-item:nth-child(3){aspect-ratio:16/10}
+.gallery-item:nth-child(4){aspect-ratio:16/10}
+.gallery-item:nth-child(5){grid-row:1/3;grid-column:3/4}
+.gallery-ov{
+  position:absolute;inset:0;
+  background:rgba(12,12,10,0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .4s;
+}
+.gallery-item:hover .gallery-ov{background:rgba(12,12,10,.35)}
+.gallery-ov svg{width:32px;height:32px;color:var(--cream);opacity:0;transition:opacity .4s}
+.gallery-item:hover .gallery-ov svg{opacity:1}
+
+/* ===== TESTIMONIALS ===== */
+.testi{position:relative;overflow:hidden}
+.testi-bg{position:absolute;inset:0}
+.testi-bg img{width:100%;height:100%;object-fit:cover}
+.testi-bg-ov{position:absolute;inset:0;background:rgba(12,12,10,.88)}
+.testi-carousel{position:relative;max-width:760px;margin:0 auto;text-align:center}
+.testi-qi{
+  color:rgba(201,169,110,.25);margin-bottom:32px;
+}
+.testi-qi svg{width:56px;height:56px}
+.testimonial-slide{display:none}
+.testimonial-slide.active{display:block}
+.testi-stars{display:flex;gap:4px;justify-content:center;margin-bottom:28px}
+.testi-stars svg{
+  width:16px;height:16px;fill:var(--gold);stroke:none;
+}
+.testi-stars svg.dim{fill:rgba(201,169,110,.25)}
+.testi-text{
+  font-family:var(--serif);font-size:clamp(1.1rem,2.5vw,1.45rem);
+  color:var(--cream);font-weight:300;font-style:italic;line-height:1.7;
+  margin-bottom:36px;
+}
+.testi-author{
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:4px;
+}
+.testi-occ{font-size:12px;color:var(--muted);letter-spacing:.06em}
+.testi-dots{display:flex;gap:10px;justify-content:center;margin-top:40px}
+.testi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(201,169,110,.25);border:none;cursor:pointer;
+  transition:background .3s,transform .3s;padding:0;
+}
+.testi-dot.active{background:var(--gold);transform:scale(1.4)}
+
+/* ===== DRESS CODE ===== */
+.dress-card{
+  position:relative;
+  background:var(--dark3);
+  border:1px solid rgba(201,169,110,.18);
+  padding:64px;max-width:900px;margin:0 auto;
+}
+.dress-corner{
+  position:absolute;width:20px;height:20px;
+  border-color:var(--gold);border-style:solid;
+}
+.dress-corner.tl{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.dress-corner.tr{top:-1px;right:-1px;border-width:1px 1px 0 0}
+.dress-corner.bl{bottom:-1px;left:-1px;border-width:0 0 1px 1px}
+.dress-corner.br{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.dress-title{
+  font-family:var(--serif);font-size:1.9rem;color:var(--cream);
+  font-weight:300;text-align:center;margin-bottom:16px;
+}
+.dress-divider{
+  width:40px;height:1px;background:var(--gold);margin:0 auto 40px;
+}
+.dress-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.dress-col-hd{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;
+}
+.dress-col-hd svg{width:18px;height:18px;flex-shrink:0}
+.dress-col-hd span{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);font-weight:500;
+}
+.dress-item{
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:var(--muted);padding:8px 0;
+  border-bottom:1px solid rgba(201,169,110,.06);
+}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot-g{background:#34d399}
+.dot-r{background:#f87171}
+
+/* ===== CONTACT ===== */
+.gold-top-line{height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-map{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--dark3)}
+.contact-map iframe{width:100%;height:100%;border:none;filter:grayscale(80%) invert(90%) brightness(.45)}
+.map-ov{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;padding:24px;
+  background:linear-gradient(to top,rgba(12,12,10,.8) 0%,transparent 60%);
+  gap:14px;color:var(--cream);transition:background .3s;
+}
+.map-ov:hover{background:linear-gradient(to top,rgba(12,12,10,.95) 0%,rgba(12,12,10,.2) 100%)}
+.map-ov svg{width:20px;height:20px;flex-shrink:0;color:var(--gold)}
+.map-ov-title{font-size:14px;font-weight:500;color:var(--cream)}
+.map-ov-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.contact-info{display:flex;flex-direction:column;gap:28px}
+.contact-row{display:flex;gap:18px;align-items:flex-start}
+.contact-icon{
+  width:40px;height:40px;border:1px solid rgba(201,169,110,.2);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.contact-icon svg{width:16px;height:16px;stroke:var(--gold);stroke-width:1.5}
+.contact-label{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:6px;
+}
+.contact-val{font-size:13px;color:var(--muted);line-height:1.8}
+.contact-val a{color:var(--muted);transition:color .3s}
+.contact-val a:hover{color:var(--gold)}
+.contact-hint{font-size:11px;color:rgba(122,110,95,.7);margin-top:4px;font-style:italic}
+.contact-hours{display:flex;flex-direction:column;gap:6px}
+.contact-hr{display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted)}
+.contact-hr span:first-child{color:rgba(242,237,228,.6)}
+.contact-div{height:1px;background:rgba(201,169,110,.12)}
+.contact-actions{display:flex;gap:12px;flex-wrap:wrap}
+.contact-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:var(--radius);
+  font-size:12px;letter-spacing:.1em;font-weight:500;
+  transition:opacity .3s,transform .3s;
+}
+.contact-btn:hover{opacity:.85;transform:translateY(-1px)}
+.btn-wa{background:#25d366;color:#fff}
+.btn-ig{
+  background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  color:#fff;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  background:#080806;
+  border-top:1px solid rgba(201,169,110,.1);
+  padding:72px 0 0;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:48px;margin-bottom:48px;
+}
+.footer-brand p{
+  font-size:13px;color:var(--muted);line-height:1.8;
+  max-width:300px;margin-top:16px;
+}
+.footer-socials{display:flex;gap:12px;margin-top:24px}
+.footer-soc{
+  width:36px;height:36px;border:1px solid rgba(201,169,110,.2);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:border-color .3s,color .3s;
+}
+.footer-soc:hover{border-color:var(--gold);color:var(--gold)}
+.footer-soc svg{width:14px;height:14px}
+.footer-hd{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);font-weight:500;margin-bottom:20px;
+}
+.footer-lnk{
+  display:block;font-size:13px;color:var(--muted);
+  padding:5px 0;transition:color .3s;
+}
+.footer-lnk:hover{color:var(--gold)}
+.footer-ci{
+  display:flex;gap:12px;font-size:12px;color:var(--muted);
+  line-height:1.7;margin-bottom:14px;
+}
+.footer-ci svg{width:14px;height:14px;stroke:var(--gold);stroke-width:1.5;flex-shrink:0;margin-top:2px}
+.footer-ci a{color:var(--muted);transition:color .3s}
+.footer-ci a:hover{color:var(--gold)}
+.footer-res{
+  display:inline-block;
+  border:1px solid var(--gold);color:var(--gold);
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  padding:10px 22px;border-radius:var(--radius);font-weight:500;
+  transition:background .3s,color .3s;margin-top:8px;
+}
+.footer-res:hover{background:var(--gold);color:var(--dark)}
+.footer-bottom{
+  border-top:1px solid rgba(201,169,110,.1);
+  padding:20px 0;display:flex;align-items:center;justify-content:space-between;
+}
+.footer-copy{font-size:11px;color:rgba(122,110,95,.6);letter-spacing:.06em}
+.scroll-top{
+  width:36px;height:36px;background:rgba(201,169,110,.1);
+  border:1px solid rgba(201,169,110,.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--gold);transition:background .3s;
+}
+.scroll-top:hover{background:var(--gold);color:var(--dark)}
+.scroll-top svg{width:14px;height:14px;stroke:currentColor;stroke-width:2}
+
+/* ===== FLOAT WA ===== */
+.float-wa{
+  position:fixed;bottom:28px;right:28px;z-index:800;
+  width:52px;height:52px;background:#25d366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,.35);
+  transition:transform .3s,box-shadow .3s;
+}
+.float-wa:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.5)}
+.float-wa svg{width:26px;height:26px;fill:#fff}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .mobile-menu-btn{display:flex}
+  .about-grid{grid-template-columns:1fr;gap:48px}
+  .about-img-accent{display:none}
+  .exp-grid{grid-template-columns:repeat(2,1fr)}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-item:nth-child(odd){padding-right:0;border-right:none}
+  .menu-item:nth-child(even){padding-left:0}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gallery-item:first-child,.gallery-item:nth-child(5){grid-row:auto;grid-column:auto}
+  .gallery-item{aspect-ratio:1}
+  .dress-card{padding:40px 28px}
+  .dress-grid{grid-template-columns:1fr;gap:32px}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+  .footer-brand{grid-column:1/-1}
+}
+@media(max-width:540px){
+  .section{padding:72px 0}
+  .exp-grid{grid-template-columns:1fr 1fr}
+  .menu-tabs{flex-wrap:wrap}
+  .footer-grid{grid-template-columns:1fr}
+  .about-stats{gap:24px}
+  .hero-actions{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="gras-nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">GR<span>Ä</span>S</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <a href="https://wa.me/2349138111444" target="_blank" class="nav-reserve">Reserve</a>
+    </div>
+    <button class="mobile-menu-btn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu">
+  <button class="mobile-close-btn" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#about">About</a>
+  <a href="#menu">Menu</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#experience">Experience</a>
+  <a href="#contact">Contact</a>
+  <a href="https://wa.me/2349138111444" target="_blank" class="mob-reserve">Reserve a Table</a>
+</div>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-bg">
+    <img src="https://images.pexels.com/photos/1579253/pexels-photo-1579253.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1800" alt="GRÄS Restaurant Lagos interior"/>
+    <div class="hero-ov"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Fine Dining · Victoria Island · Lagos</span>
+    <h1 class="hero-title">GRÄS</h1>
+    <p class="hero-subtitle">An upscale all-day dining destination fusing world cuisines in an elegant Lagos setting</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/2349138111444?text=Hi%2C%20I'd%20like%20to%20make%20a%20reservation%20at%20GR%C3%84S%20Restaurant%20Lagos" target="_blank" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Reserve a Table
+      </a>
+      <a href="#menu" class="btn-outline">Explore the Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div data-reveal="left">
+        <div class="about-img-wrap">
+          <img src="https://images.pexels.com/photos/3338497/pexels-photo-3338497.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=640" alt="GRÄS restaurant interior"/>
+          <div class="about-img-accent"></div>
+        </div>
+      </div>
+      <div data-reveal="right" data-delay="150">
+        <span class="about-tag">Our Story</span>
+        <h2 class="about-title">Where Lagos Meets the World at the Table</h2>
+        <p class="about-text">GRÄS is an upscale all-day dining concept perched atop Cube 65 in Victoria Island — one of Lagos's most iconic addresses. With a display Ferrari at the entrance and a rooftop view that stretches across the city, the experience begins long before the first course.</p>
+        <p class="about-text">We serve a curated fusion of world cuisines with a distinctly Nigerian soul. From Black Angus ribeye cooked to a perfect medium rare to the ethereal Butterfly Salmon, every dish is an expression of craft, quality, and intentionality.</p>
+        <div class="about-stats">
+          <div>
+            <div class="stat-num" data-count="65">0</div>
+            <div class="stat-label">Adeola Odeku</div>
+          </div>
+          <div>
+            <div class="stat-num" data-count="4.8">0</div>
+            <div class="stat-label">Guest Rating</div>
+          </div>
+          <div>
+            <div class="stat-num" data-count="3">0</div>
+            <div class="stat-label">Live Experiences</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE STATS -->
+<section id="experience" class="section section-dark" style="padding:0">
+  <div class="exp-grid">
+    <div class="exp-card" data-reveal data-delay="0">
+      <div class="exp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="exp-num" data-count="5">0</div>
+      <div class="exp-label">Star Experience</div>
+    </div>
+    <div class="exp-card" data-reveal data-delay="80">
+      <div class="exp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="exp-num" data-count="200">0</div>
+      <div class="exp-label">Seat Capacity</div>
+    </div>
+    <div class="exp-card" data-reveal data-delay="160">
+      <div class="exp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 2l2 5h14l2-5"/><path d="M5 7c0 7 3 12 7 12s7-5 7-12"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg></div>
+      <div class="exp-num" data-count="40">0</div>
+      <div class="exp-label">Curated Drinks</div>
+    </div>
+    <div class="exp-card" data-reveal data-delay="240">
+      <div class="exp-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+      <div class="exp-num">7</div>
+      <div class="exp-label">Days a Week</div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="section">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="section-tag">Culinary Offerings</span>
+      <h2 class="section-title">The Menu</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">A carefully curated selection of world cuisines, executed with precision and served with grace.</p>
+    </div>
+    <div class="menu-tabs" data-reveal data-delay="100">
+      <button class="menu-tab active" data-tab="mains">Mains</button>
+      <button class="menu-tab" data-tab="starters">Starters</button>
+      <button class="menu-tab" data-tab="drinks">Drinks</button>
+      <button class="menu-tab" data-tab="desserts">Desserts</button>
+    </div>
+    <div class="menu-panel active" id="tab-mains" data-reveal data-delay="180">
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div><div class="menu-name">Black Angus Ribeye Steak</div><div class="menu-desc">Medium rare · Roasted garlic butter · Precision-cut side</div></div>
+          <div class="menu-price">₦68,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Butterfly Salmon</div><div class="menu-desc">Pan-seared · Lemon beurre blanc · Seasonal greens</div></div>
+          <div class="menu-price">₦42,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Slow-Braised Lamb Shank</div><div class="menu-desc">Rosemary jus · Pomme purée · Gremolata</div></div>
+          <div class="menu-price">₦55,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Pan-Seared Sea Bass</div><div class="menu-desc">Saffron risotto · Champagne velouté · Micro herbs</div></div>
+          <div class="menu-price">₦46,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Wagyu Beef Burger</div><div class="menu-desc">Brioche bun · Truffle mayo · Aged cheddar · Fries</div></div>
+          <div class="menu-price">₦32,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Lobster Thermidor</div><div class="menu-desc">Gratin · Cognac cream · Parmesan crust</div></div>
+          <div class="menu-price">₦85,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-panel" id="tab-starters" data-reveal>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div><div class="menu-name">Burrata & Heirloom Tomatoes</div><div class="menu-desc">Aged balsamic · Basil oil · Sourdough crostini</div></div>
+          <div class="menu-price">₦18,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Seared Scallops</div><div class="menu-desc">Cauliflower purée · Crispy pancetta · Pea shoots</div></div>
+          <div class="menu-price">₦24,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Tuna Tartare</div><div class="menu-desc">Avocado · Ponzu · Sesame crisp · Tobiko</div></div>
+          <div class="menu-price">₦22,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">French Onion Soup</div><div class="menu-desc">Gruyère crust · Bone broth · Toasted baguette</div></div>
+          <div class="menu-price">₦14,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-panel" id="tab-drinks" data-reveal>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div><div class="menu-name">Virgin Strawberry Daiquiri</div><div class="menu-desc">Fresh strawberries · Lime · Agave · Crushed ice</div></div>
+          <div class="menu-price">₦9,500</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">GRÄS Signature Spritz</div><div class="menu-desc">Elderflower · Passionfruit · Sparkling water · Mint</div></div>
+          <div class="menu-price">₦11,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Old Fashioned</div><div class="menu-desc">Bourbon · Angostura bitters · Demerara · Orange peel</div></div>
+          <div class="menu-price">₦16,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Champagne (Veuve Clicquot)</div><div class="menu-desc">Brut · Chilled · Per glass or bottle</div></div>
+          <div class="menu-price">₦28,000</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-panel" id="tab-desserts" data-reveal>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div><div class="menu-name">Chocolate Fondant</div><div class="menu-desc">70% Valrhona · Vanilla bean ice cream · Caramel soil</div></div>
+          <div class="menu-price">₦12,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Crème Brûlée</div><div class="menu-desc">Madagascan vanilla · Caramelised crust · Berries</div></div>
+          <div class="menu-price">₦10,500</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Mango Panna Cotta</div><div class="menu-desc">Fresh mango coulis · Coconut cream · Shortbread</div></div>
+          <div class="menu-price">₦9,000</div>
+        </div>
+        <div class="menu-item">
+          <div><div class="menu-name">Cheese Board</div><div class="menu-desc">Selection of aged cheeses · Honey · Grapes · Crackers</div></div>
+          <div class="menu-price">₦18,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section section-dark">
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="section-tag">The Ambience</span>
+      <h2 class="section-title">A Visual Story</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery-grid" data-reveal data-delay="150">
+      <div class="gallery-item" style="min-height:400px">
+        <img src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=600" alt="GRÄS interior"/>
+        <div class="gallery-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Food presentation"/>
+        <div class="gallery-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.pexels.com/photos/3491323/pexels-photo-3491323.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Cocktails"/>
+        <div class="gallery-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.pexels.com/photos/2017825/pexels-photo-2017825.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Table setting"/>
+        <div class="gallery-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="gallery-item" style="min-height:400px">
+        <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=600" alt="Dining experience"/>
+        <div class="gallery-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testi" style="position:relative;overflow:hidden">
+  <div class="testi-bg">
+    <img src="https://images.pexels.com/photos/34723775/pexels-photo-34723775.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1600" alt="" loading="lazy"/>
+    <div class="testi-bg-ov"></div>
+  </div>
+  <div class="container" style="position:relative">
+    <div class="section-header" data-reveal>
+      <span class="section-tag">Guest Voices</span>
+      <h2 class="section-title">What They Say</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="testi-carousel" data-reveal data-delay="200">
+      <div class="testi-qi">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+      </div>
+      <div class="testimonial-slide active">
+        <div class="testi-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">"This is fine dining at its absolute finest. From the beautiful display car at the entrance, you can already tell you're stepping into a super high-end restaurant. Beautifully laid out, classy decoration. You can't beat this ambience."</p>
+        <div class="testi-author">Wanderlog Reviewer</div>
+        <div class="testi-occ">Business Dinner</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testi-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">"The ambience was well lit and the table arrangement was perfect. The Butterfly Salmon and the Virgin Strawberry Daiquiri were exceptional. I'd surely visit again."</p>
+        <div class="testi-author">Dinesurf Guest</div>
+        <div class="testi-occ">Date Night</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testi-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="dim" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">"We had a great time at Gras. The service was good, and our waiter was charming, helpful and attentive. The staff offered to take my photos in the restroom — super patient!"</p>
+        <div class="testi-author">Mariam S.</div>
+        <div class="testi-occ">Girls Night Out</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testi-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">"One of the 3 places in Lagos that can serve a proper medium rare Ribeye Steak. Their Black Angus beef is tasty and the side dish is cut into perfect cubes. The live violinist was a beautiful touch."</p>
+        <div class="testi-author">BestLagos Review</div>
+        <div class="testi-occ">Anniversary Dinner</div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testi-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-text">"I was pretty blown away with the atmosphere and ambience. It has such a premium touch one would forget you're still in Nigeria. The service was also top-notch."</p>
+        <div class="testi-author">Dinesurf Guest</div>
+        <div class="testi-occ">Special Celebration</div>
+      </div>
+    </div>
+    <div class="testi-dots" data-reveal data-delay="300">
+      <button class="testi-dot active"></button>
+      <button class="testi-dot"></button>
+      <button class="testi-dot"></button>
+      <button class="testi-dot"></button>
+      <button class="testi-dot"></button>
+    </div>
+  </div>
+</section>
+
+<!-- DRESS CODE -->
+<section class="section" style="overflow:hidden">
+  <div class="container">
+    <div class="dress-card" data-reveal>
+      <div class="dress-corner tl"></div>
+      <div class="dress-corner tr"></div>
+      <div class="dress-corner bl"></div>
+      <div class="dress-corner br"></div>
+      <h3 class="dress-title">Dress Code & Essentials</h3>
+      <div class="dress-divider"></div>
+      <div class="dress-grid">
+        <div>
+          <div class="dress-col-hd">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Recommended</span>
+          </div>
+          <div class="dress-item"><span class="dot dot-g"></span>Smart casual attire</div>
+          <div class="dress-item"><span class="dot dot-g"></span>Collared shirts preferred</div>
+          <div class="dress-item"><span class="dot dot-g"></span>Elegant dresses</div>
+          <div class="dress-item"><span class="dot dot-g"></span>Closed-toe shoes</div>
+          <div class="dress-item"><span class="dot dot-g"></span>Reservations in advance</div>
+        </div>
+        <div>
+          <div class="dress-col-hd">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>Not Allowed</span>
+          </div>
+          <div class="dress-item"><span class="dot dot-r"></span>Slippers or flip-flops</div>
+          <div class="dress-item"><span class="dot dot-r"></span>Shorts or bermudas</div>
+          <div class="dress-item"><span class="dot dot-r"></span>Revealing clothing</div>
+          <div class="dress-item"><span class="dot dot-r"></span>Athletic or gym wear</div>
+          <div class="dress-item"><span class="dot dot-r"></span>Walk-ins without ₦40k minimum</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section section-dark" style="position:relative">
+  <div class="gold-top-line"></div>
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <span class="section-tag">Find Us</span>
+      <h2 class="section-title">Visit GRÄS</h2>
+      <div class="section-line"></div>
+      <p class="section-desc">Reservations are highly recommended. Smart casual dress code — no slippers, revealing clothes or shorts allowed.</p>
+    </div>
+    <div class="contact-grid">
+      <div data-reveal="left">
+        <div class="contact-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7!2d3.4224364!3d6.4293568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf52e0dbf95b5%3A0x7a9c0f2e01e8e7a0!2s65%20Adeola%20Odeku%20St%2C%20Victoria%20Island%2C%20Lagos%20101233%2C%20Lagos!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location"></iframe>
+          <a href="https://www.google.com/maps/dir//65+Adeola+Odeku+St,+Victoria+Island,+Lagos+101233,+Lagos" target="_blank" rel="noopener noreferrer" class="map-ov">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            <div><div class="map-ov-title">Get Directions</div><div class="map-ov-sub">Open in Google Maps</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-info" data-reveal="right" data-delay="150">
+        <div class="contact-row">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div>
+            <div class="contact-label">Address</div>
+            <div class="contact-val">65 Adeola Odeku Street,<br/>Victoria Island, Lagos 101233, Nigeria</div>
+            <div class="contact-hint">Same building as Mikano Motors — take the elevator to the top floor</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div>
+            <div class="contact-label">Opening Hours</div>
+            <div class="contact-hours">
+              <div class="contact-hr"><span>Monday</span><span>6:00 PM – 12:00 AM</span></div>
+              <div class="contact-hr"><span>Tuesday – Friday</span><span>12:00 PM – 12:00 AM</span></div>
+              <div class="contact-hr"><span>Saturday – Sunday</span><span>12:00 PM – 12:00 AM</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+          <div>
+            <div class="contact-label">Reservations</div>
+            <div class="contact-val">
+              <a href="tel:+2349138111444">+234 913 811 1444</a><br/>
+              <a href="tel:+2349138111555">+234 913 811 1555</a><br/>
+              <a href="mailto:grasreservation@cube65.com" style="display:inline-flex;align-items:center;gap:6px;margin-top:4px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:12px;height:12px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                grasreservation@cube65.com
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-div"></div>
+        <div class="contact-actions">
+          <a href="https://wa.me/2349138111444?text=Hi%2C%20I'd%20like%20to%20make%20a%20reservation%20at%20GR%C3%84S%20Restaurant%20Lagos" target="_blank" rel="noopener noreferrer" class="contact-btn btn-wa">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="https://www.instagram.com/gras_lagos/" target="_blank" rel="noopener noreferrer" class="contact-btn btn-ig">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div>
+          <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--cream);letter-spacing:.08em">GRÄS</span>
+          <span style="display:block;font-size:9px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;font-weight:500">Fine Dining &bull; Lagos</span>
+        </div>
+        <p>An upscale all-day dining destination in the heart of Victoria Island, offering a fusion of world cuisines in an elegant setting. A concept by Cube 65.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/gras_lagos/" target="_blank" rel="noopener noreferrer" class="footer-soc" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/2349138111444" target="_blank" rel="noopener noreferrer" class="footer-soc" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="tel:+2349138111444" class="footer-soc" aria-label="Phone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-hd">Navigate</h4>
+        <a href="#home" class="footer-lnk">Home</a>
+        <a href="#about" class="footer-lnk">About</a>
+        <a href="#menu" class="footer-lnk">Menu</a>
+        <a href="#gallery" class="footer-lnk">Gallery</a>
+        <a href="#experience" class="footer-lnk">Experience</a>
+        <a href="#contact" class="footer-lnk">Contact</a>
+      </div>
+      <div>
+        <h4 class="footer-hd">Contact</h4>
+        <div class="footer-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>65 Adeola Odeku St,<br/>Victoria Island, Lagos</span></div>
+        <div class="footer-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><a href="tel:+2349138111444">0913 811 1444</a></div>
+        <a href="https://wa.me/2349138111444" target="_blank" rel="noopener noreferrer" class="footer-res">Reserve Now</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2025 GRÄS Restaurant Lagos. A concept by Cube 65. All rights reserved.</p>
+      <button class="scroll-top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/2349138111444?text=Hi%2C%20I'd%20like%20to%20make%20a%20reservation%20at%20GR%C3%84S%20Restaurant%20Lagos" target="_blank" rel="noopener noreferrer" class="float-wa" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="#fff"/></svg>
+</a>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var $$=function(s){return document.querySelectorAll(s)};
+
+  /* Navbar scroll */
+  var nav=$(".gras-nav");
+  window.addEventListener("scroll",function(){
+    if(!nav)return;
+    nav.classList.toggle("nav-scrolled",window.scrollY>60);
+  });
+
+  /* Mobile menu */
+  var menuBtn=$(".mobile-menu-btn"),closeBtn=$(".mobile-close-btn"),mob=$(".mobile-menu");
+  var closeMob=function(){mob&&mob.classList.remove("active");document.body.style.overflow=""};
+  menuBtn&&menuBtn.addEventListener("click",function(){mob&&mob.classList.add("active");document.body.style.overflow="hidden"});
+  closeBtn&&closeBtn.addEventListener("click",closeMob);
+  $$(".mobile-menu a").forEach(function(l){l.addEventListener("click",closeMob)});
+
+  /* Scroll reveal */
+  var revObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var el=e.target;
+        el.style.transitionDelay=(el.dataset.delay||"0")+"ms";
+        el.classList.add("revealed");
+        revObs.unobserve(el);
+      }
+    });
+  },{threshold:0.12});
+  $$("[data-reveal]").forEach(function(el){revObs.observe(el)});
+
+  /* Counter */
+  var cntObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var el=e.target;
+        var tgt=parseFloat(el.dataset.count||"0");
+        var dec=tgt%1!==0;
+        var cur=0,step=tgt/60;
+        var t=setInterval(function(){
+          cur+=step;
+          if(cur>=tgt){cur=tgt;clearInterval(t);}
+          el.textContent=dec?cur.toFixed(1):Math.floor(cur).toString();
+        },20);
+        cntObs.unobserve(el);
+      }
+    });
+  },{threshold:0.5});
+  $$("[data-count]").forEach(function(el){cntObs.observe(el)});
+
+  /* Menu tabs */
+  $$(".menu-tab").forEach(function(tab){
+    tab.addEventListener("click",function(){
+      $$(".menu-tab").forEach(function(t){t.classList.remove("active")});
+      $$(".menu-panel").forEach(function(p){p.classList.remove("active")});
+      tab.classList.add("active");
+      var panel=document.getElementById("tab-"+tab.dataset.tab);
+      if(panel)panel.classList.add("active");
+    });
+  });
+
+  /* Testimonial carousel */
+  var slides=$$(".testimonial-slide");
+  var dots=$$(".testi-dot");
+  var current=0,autoTimer=null;
+
+  function goTo(i){
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active");
+    current=i;
+    slides[current].classList.add("active");
+    dots[current].classList.add("active");
+  }
+  function next(){goTo((current+1)%slides.length)}
+
+  dots.forEach(function(dot,i){
+    dot.addEventListener("click",function(){
+      clearInterval(autoTimer);
+      goTo(i);
+      autoTimer=setInterval(next,5000);
+    });
+  });
+  autoTimer=setInterval(next,5000);
+
+  /* Touch swipe on testimonials */
+  var carousel=$(".testi-carousel");
+  var touchStartX=0;
+  carousel&&carousel.addEventListener("touchstart",function(e){touchStartX=e.touches[0].clientX},{passive:true});
+  carousel&&carousel.addEventListener("touchend",function(e){
+    var diff=touchStartX-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50){
+      clearInterval(autoTimer);
+      goTo(diff>0?(current+1)%slides.length:(current-1+slides.length)%slides.length);
+      autoTimer=setInterval(next,5000);
+    }
+  });
+
+  /* Scroll to top */
+  var scrollTopBtn=$(".scroll-top");
+  scrollTopBtn&&scrollTopBtn.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+
+})();
+</script>
+</body>
+</html>
